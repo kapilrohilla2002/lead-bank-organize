@@ -64,12 +64,6 @@ def main():
             leadBankData.extend(queryResult)
             print("breaking")
             break
-            # if len(queryResult) == 2000:
-            #     leadBankOuterOffset += leadBankOuterLimit;
-            #     continue;
-            # else :
-            #     print("breaking")
-            #     break;
         leadBankInnerOffset += leadBankInnerLimit
 
     print(f"leadBankData Size = {len(leadBankData)}")
@@ -209,7 +203,13 @@ def main():
     print("Clearning data on google Sheet tab...")
     leadBankTableTab.clear()
     print("Saving data to Google Sheet tab...")
-    leadBankTableTab.update(data_to_save,'A1')
+    
+    batch_size = 100000
+    total_rows = len(data_to_save)
+    for start in range(0, total_rows, batch_size):
+        end = min(start + batch_size, total_rows)
+        print(f"Updating rows {start+1} to {end}...")
+        leadBankTableTab.update(data_to_save[start:end], f"A{start+1}")
     print("✅ Data saved to Google Sheet tab successfully!")
 
 
