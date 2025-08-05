@@ -31,8 +31,8 @@ def main():
     print("Fetching Lead bank count...")
     leadBankDataCountQuery = util.getLeadBankDataCountQuery()
     leadBankDataCountResult = util.executeQuery(leadBankDataCountQuery)
-    # leadBankDataCount = leadBankDataCountResult[0]['count'] 
-    leadBankDataCount = 10000;
+    leadBankDataCount = leadBankDataCountResult[0]['count'] 
+    # leadBankDataCount = 10000;
     print(f"Total Lead Bank Data Count: {leadBankDataCount}")
 
 
