@@ -1,5 +1,6 @@
 import constants
 import requests
+import pandas as pd
 
 def executeQuery(query):
     payload = {
@@ -204,3 +205,15 @@ def getCallingHistoryStageScore(innerOffset, innerLimit, outerLimit, outerOffset
         lbd.phone
         LIMIT {outerLimit} OFFSET {outerOffset};
 '''
+
+
+def updateSheet(data_to_save, leadBankTableTab):
+    # print(data_to_save)
+    data_to_save = [list(data_to_save.columns)] + data_to_save.replace([float('inf'), float('-inf')], pd.NA).fillna('').astype(str).values.tolist()
+    batch_size = int(100000)
+    total_rows = int(len(data_to_save))
+    for start in range(0, total_rows, batch_size):
+        end = min(start + batch_size, total_rows)
+        print(f"Updating rows {start+1} to {end}...")
+        leadBankTableTab.update(data_to_save[start:end], f"A{start+1}")
+    print("✅ Data saved to Google Sheet tab successfully!")
