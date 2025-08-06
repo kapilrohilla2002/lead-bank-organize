@@ -206,6 +206,14 @@ def getCallingHistoryStageScore(innerOffset, innerLimit, outerLimit, outerOffset
         LIMIT {outerLimit} OFFSET {outerOffset};
 '''
 
+def ensureSheetHasRow(worksheet, required_rows):
+    current_rows = worksheet.row_count
+    if required_rows > current_rows:
+        rows_to_add = required_rows - current_rows
+        print(f"Adding {rows_to_add} rows to the sheet...")
+        worksheet.add_rows(rows_to_add)
+
+
 
 def updateSheet(data_to_save, leadBankTableTab):
     # print(data_to_save)
@@ -215,5 +223,6 @@ def updateSheet(data_to_save, leadBankTableTab):
     for start in range(0, total_rows, batch_size):
         end = min(start + batch_size, total_rows)
         print(f"Updating rows {start+1} to {end}...")
+        ensureSheetHasRow(leadBankTableTab, total_rows + 1)
         leadBankTableTab.update(data_to_save[start:end], f"A{start+1}")
     print("✅ Data saved to Google Sheet tab successfully!")
