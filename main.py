@@ -206,7 +206,8 @@ def main():
         data_to_save = pd.read_csv(finalContentFilePath, encoding="utf-8")
     
     print("Clearning data on google Sheet tab...")
-    leadBankTableTab.clear()
+    leadBankTableTab.batch_clear(['A:Q'])
+    # leadBankTableTab.clear()
     util.updateSheet(data_to_save, leadBankTableTab)
         
 
